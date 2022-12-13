@@ -1,0 +1,226 @@
+#################################
+#   BIENVENUS AU CODING-CLUB :  #
+# DECOUVERTE ET INITIATION AU C #
+#################################
+
+Le langage de programmation C est un langage de programmation bas-niveau à l'instar du language de programmation python.
+
+Le but aujourd'hui est de vous initier à un langage de programmation plus exigeant que le python.
+
+Vous apprendrez à ecrire sur le terminal en C. Et pour les plus avancé d'entre vous, nous vous proposerons de dessiner sur le terminal.
+
+Pour ce coding club vous aurez de quelques ressources :
+
+- Un ordinateur
+- Un accès à internet
+- https://onecompiler.com/c
+- https://bellard.org/jslinux/ > riscv64 > Fedora 33 (Linux) > Console
+- Et un peu de courage
+
+#########################################
+#           Premiere Partie :           #
+#            Le man ou Manuel           #
+#########################################
+
+Le manuel est une base de donnée essentielle pour tout développeur qui se respecte, nous vous accompagnerons à travers votre premier man, et après lecture de celui ci, peut-être que vous saurez écrire sur un terminal !
+
+/!\ LA FONCTION PRINTF ET LES FONCTIONS SIMILAIRES SONT INTERDITES :
+Aujourd'hui nous n'utiliserons aucune fonction pré-existante mais uniquement des "appels système"
+
+###########################################
+#                DEFINITIONS              #
+#     Qu'est-ce qu'un appel système ?     #
+###########################################
+
+Un appel système est une fonction essentielle de votre système, si elle n'existait pas, votre ordinateur n'exsiterait pas.
+Ces appels systèmes permettent d'écrire et de lire sur des fichiers. 
+Et comme vous le découvrirez peut-etre un jour en étude supérieur :
+L'entiereté de votre ordinateur sont des fichiers dans lequel ce dernier écrit et lit en permanence
+
+#########################################
+#        PREMIERE LECTURE DE MAN        #
+#########################################
+
+Dans ce coding club nous apprendons uniquement à ecrire sur le terminal.
+
+Quelques informations essentielles :
+Votre ordinateur est composer de 3 fichiers essentielles que vous utilisez tout les jours sans le savoir.
+
+#########################################################################################
+#                                                                                       #
+# Le premier est le "stdin" ou "standard input" ou entrée standard en français.         # 
+# Il s'agit du fichier d'entrée. Ce fichier récupère vos entrées.                       #
+# Ex : Lorsque vous écrivez sur des commandes dans votre terminal                       #
+# et appuyer sur entrée, vous écrivez dans la standard input                            #
+# file descriptor : N°0                                                                 #
+#                                                                                       #
+# Le second est le "stdout" ou "standard output" ou sortie standard en français.        #
+# Il s'agit du fichier de sortie. Ce fichier affiche la sortie des programmes.          #
+# Ex : Lorsque vous écrivez la commande "ls" dans votre terminal,                       #
+# ce qu'affiche la commande est en fait écrit sur la standard output.                   #
+# file descriptor : N°1                                                                 #
+#                                                                                       #
+# Le 3ème fichier est le "stderr" ou "error output" ou sortie d'erreur en français.     #
+# Il s'agit du fichier de sortie en cas d'erreur.                                       #
+# Ex : Si votre programme mène à une erreur, il écrira l'erreur dans le fichier stderr  #
+# file descriptor : N°2                                                                 #
+#                                                                                       #
+#########################################################################################
+
+Afin d'écrire sur le terminal, vous devrez utilisez la commande write, nous vous 
+invitons à taper la commande suivante dans votre terminal :
+
+[root@localhost ~]# man 2 write
+
+A votre écran s'affiche la page 2 du manuel de write
+Nous pouvons tirer plusieurs informations de cette page, parcourons la ensemble :
+Déjà un courte description de la fonction write : "write to a file descriptor"
+Nous savons aussi que write utilise une librairie :
+En C vous découvrirez que pour inclure une librairie nous devons écrire :
+
+"
+#include <LIBRAIRIE>
+"
+
+Ici la librairie sera "unistd.h"
+
+Enfin nous avons l'écriture typique aussi appelé "prototype" de la commande "write" 
+write est une fonction de type ssize_t, nous n'expliquerons pas ce que cela represente sauf si vous souhaitez une explication
+
+la fonction write prend en paramètre 3 paramètres:
+
+le premier est un entier fd, soit file descriptor
+le deuxieme est un void *buf, dans notre cas ce sera un char, plus simplement dit, une lettre
+et le dernier parametre est un size_t count, soit le nombre de caractère que nous souhaitons imprimer
+
+#############################
+#        EXERCICE 1         #
+#      PREMIER MAIN ET      #
+#     PREMIERE FONCTION     #
+#############################
+
+prototype : int my_putchar(char c);
+
+Complétons ce premiere exercice ensemble :
+Recopiez le main et completer la fonction my_putchar sur https://onecompiler.com/c
+
+"
+#include <unistd.h>
+
+int main(void)
+{
+    char c = 'a';
+    my_putchar(c);
+    return 0;
+}
+"
+
+##########################
+#       EXERCICE 2       #
+#   IMPRIMER TOUTES LES  #
+#  LETTRES DE L'ALPHABET #
+##########################
+
+prototype : int my_print_alpha(void);
+
+Conseils :
+    man ascii
+    boucle while
+
+##########################
+#      EXERCICE 2-bis    #
+#   IMPRIMER TOUTES LES  #
+#  LETTRES DE L'ALPHABET #
+#       A L'ENVERS       #
+##########################
+
+prototype : int my_print_revalpha(void);
+
+##########################
+#       EXERCICE 3       #
+#   IMPRIMER TOUTES LES  #
+#      LES CHIFFRES      #
+##########################
+
+prototype : int my_print_digits(void);
+
+Conseils :
+    man ascii
+    boucle for
+
+############################
+#LES CHAINES DE CARACTERES #
+#           EN C           #
+############################
+
+char *str = "Hello World !"
+v v v v v v v v v v v v v v v v v v v v v v
+
+[H][e][l][l][o][ ][W][o][r][l][d][ ][!][\0]
+
+^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
+
+En C pour déterminer la fin d'une chaîne de caractère dans la mémoire RAM, le dernier caractère est un \0 aussi appelé "NULL byte"
+
+/!\ Si vous essayez de lire le "NULL byte" votre programme essaiera de lire dans un espace de la mémoire qui n'a jamais été crée !
+/!\ C'est le crash assuré !!!
+/!\ Pensez à vous arrétez AVANT de lire le NULL byte
+
+Code de base :
+
+##########################
+#       EXERCICE 4       #
+#   TROUVER LA LONGUEUR  #
+#      D'UNE CHAINE      #
+#      DE CARACTERES     #
+##########################
+
+prototype : int my_strlen(char *str);
+
+Recopiez et complétez ce code
+
+"
+#include <stdio.h>
+
+int main(void)
+{
+    char *str = "Hello World !";
+    int len = my_strlen(str);
+    printf("%d\n", len);
+}
+"
+
+##########################
+#       EXERCICE 5       #
+#         IMPRIMER       #
+#       UNE CHAINE       #
+#      DE CARACTERES     #
+##########################
+
+prototype : int my_putstr(char *str);
+
+Récuperez le code précédent et essayer d'imprimer une chaîne de caractère
+
+Conseils:
+    write
+    boucle for
+    boucle while
+
+##########################
+#       EXERCICE 6       #
+#   IMPRIMER L'INVERSE   #
+#      D'UNE CHAINE      #
+#      DE CARACTERES     #
+##########################
+
+prototype : my_print_revstr(char *str);
+
+#################
+#   EXERCICE 7  #
+# LIBEREZ VOTRE #
+#  IMAGINATION  #
+#################
+
+Consigne 1: Essayer de dessiner un Carrée ou une autre forme géométrique 
+
+Les plus courageux essaieront de faire une étoile*
